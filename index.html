@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="C'JUDE CO. B2C thrift e-commerce store." />
+  <title>C'JUDE CO. | B2C Thrift Store</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+  <div id="loadingBar" class="loading-bar" role="progressbar" aria-label="Loading" aria-hidden="true"></div>
+
+  <!-- Authentication gateway. There is intentionally no visible owner option. -->
+  <section id="authScreen" class="auth-screen" aria-labelledby="authTitle">
+    <div class="auth-brand-panel">
+      <img src="assets/cjude-logo.svg" alt="C'JUDE CO. logo" class="auth-logo" />
+      <div>
+        <p class="eyebrow">PRE-LOVED • CURATED • LOW WASTE</p>
+        <h1 id="authTitle">Wear more.<br /><span>Waste less.</span></h1>
+        <p class="auth-intro">Sign in or create a customer account to browse the latest thrift drop, rate products, leave feedback, and place orders.</p>
+      </div>
+      <div class="auth-highlights" aria-label="Store highlights">
+        <span>✓ B2C storefront</span>
+        <span>✓ GCash or COD</span>
+        <span>✓ Secure-looking demo flow</span>
+      </div>
+    </div>
+
+    <div class="auth-form-panel">
+      <div class="auth-card">
+        <div class="auth-tabs" role="tablist" aria-label="Authentication options">
+          <button id="loginTab" class="auth-tab active" type="button" role="tab" aria-selected="true">Log in</button>
+          <button id="signupTab" class="auth-tab" type="button" role="tab" aria-selected="false">Sign up</button>
+        </div>
+
+        <form id="loginForm" class="auth-form" novalidate>
+          <div class="form-heading">
+            <p class="eyebrow">WELCOME BACK</p>
+            <h2>Log in to C'JUDE CO.</h2>
+            <p>Use your registered customer account. Authorized credentials are detected automatically.</p>
+          </div>
+          <label>Email address
+            <input id="loginEmail" type="email" autocomplete="email" required placeholder="you@example.com" />
+          </label>
+          <label>Password
+            <div class="password-field">
+              <input id="loginPassword" type="password" autocomplete="current-password" required minlength="8" placeholder="Enter your password" />
+              <button class="text-button password-toggle" type="button" data-toggle-password="loginPassword">Show</button>
+            </div>
+          </label>
+          <p id="loginError" class="form-error" role="alert"></p>
+          <button class="primary-button full" type="submit">Log in</button>
+          <p class="microcopy">No role selector is shown. Access level is assigned automatically after a successful login.</p>
+        </form>
+
+        <form id="signupForm" class="auth-form hidden" novalidate>
+          <div class="form-heading">
+            <p class="eyebrow">NEW CUSTOMER</p>
+            <h2>Create your account</h2>
+            <p>Your account keeps your cart, ratings, feedback, and order history available in this browser demo.</p>
+          </div>
+          <label>Full name
+            <input id="signupName" type="text" autocomplete="name" required minlength="2" maxlength="70" placeholder="Juan Dela Cruz" />
+          </label>
+          <label>Email address
+            <input id="signupEmail" type="email" autocomplete="email" required maxlength="120" placeholder="you@example.com" />
+          </label>
+          <label>Password
+            <div class="password-field">
+              <input id="signupPassword" type="password" autocomplete="new-password" required minlength="8" maxlength="80" placeholder="At least 8 characters" />
+              <button class="text-button password-toggle" type="button" data-toggle-password="signupPassword">Show</button>
+            </div>
+          </label>
+          <label>Confirm password
+            <input id="signupConfirm" type="password" autocomplete="new-password" required minlength="8" maxlength="80" placeholder="Repeat your password" />
+          </label>
+          <label class="check-row"><input id="signupTerms" type="checkbox" required /> <span>I confirm that the information above is correct.</span></label>
+          <p id="signupError" class="form-error" role="alert"></p>
+          <button class="primary-button full" type="submit">Create account</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Application shell -->
+  <div id="appShell" class="app-shell hidden" aria-hidden="true">
+    <header class="topbar">
+      <button class="brand-button" type="button" data-route="shop" aria-label="Go to shop">
+        <img src="assets/cjude-logo.svg" alt="C'JUDE CO. logo" />
+        <div><strong id="headerStoreName">C'JUDE CO.</strong><span id="headerTagline">Wear more. Waste less.</span></div>
+      </button>
+
+      <nav id="mainNav" class="main-nav" aria-label="Main navigation">
+        <button class="nav-link active" type="button" data-route="shop">Shop</button>
+        <button class="nav-link consumer-only" type="button" data-route="my-orders">My Orders</button>
+        <button class="nav-link owner-only" type="button" data-route="inventory">Inventory</button>
+        <button class="nav-link owner-only" type="button" data-route="orders">Orders</button>
+        <button class="nav-link owner-only" type="button" data-route="feedback">Feedback</button>
+        <button class="nav-link" type="button" data-route="settings">Settings</button>
+      </nav>
+
+      <div class="topbar-actions">
+        <button id="cartButton" class="cart-button consumer-only" type="button" aria-label="Open shopping cart">Cart <span id="cartCount">0</span></button>
+        <button id="accountButton" class="account-button" type="button" aria-haspopup="true" aria-expanded="false">
+          <span id="accountInitial">U</span>
+          <div><b id="accountName">User</b><small id="accountRole">Customer</small></div>
+          <span aria-hidden="true">⌄</span>
+        </button>
+        <div id="accountMenu" class="account-menu hidden">
+          <div class="account-menu-copy"><b id="menuAccountName">User</b><span id="menuAccountEmail">email@example.com</span></div>
+          <button id="logoutButton" type="button">Log out</button>
+        </div>
+      </div>
+    </header>
+
+    <div id="announcementBar" class="announcement-bar">PRE-LOVED • CURATED • READY FOR A SECOND LIFE</div>
+
+    <main id="viewStage" class="view-stage">
+      <!-- SHOP -->
+      <section id="view-shop" class="app-view active" data-view="shop" aria-labelledby="shopTitle">
+        <div class="shop-layout">
+          <aside class="shop-sidebar">
+            <p class="eyebrow">C'JUDE CO. STORE</p>
+            <h1 id="shopTitle">Find your next <span>pre-loved fit.</span></h1>
+            <p>Shop one-off thrift pieces with transparent condition notes, stock counts, and customer ratings.</p>
+            <div class="shop-stat-grid">
+              <div><strong id="shopProductCount">0</strong><span>Live pieces</span></div>
+              <div><strong id="shopCategoryCount">0</strong><span>Categories</span></div>
+            </div>
+            <div class="mini-trust">
+              <span>✓ GCash / COD</span>
+              <span>✓ Shipment details captured</span>
+              <span>✓ Customer ratings & feedback</span>
+            </div>
+          </aside>
+
+          <div class="shop-content">
+            <div class="shop-toolbar">
+              <label class="search-field"><span>Search products</span><input id="searchInput" type="search" placeholder="Search tees, denim, jackets..." /></label>
+              <label><span>Category</span><select id="categoryFilter"><option value="all">All categories</option></select></label>
+              <label><span>Sort by</span><select id="sortSelect"><option value="newest">Newest</option><option value="rating">Top rated</option><option value="price-low">Price: Low to High</option><option value="price-high">Price: High to Low</option><option value="name">Name A–Z</option></select></label>
+            </div>
+            <div id="productGrid" class="product-grid" aria-live="polite"></div>
+            <div id="productEmpty" class="empty-state hidden"><div class="empty-mark">C'</div><h2>No products found.</h2><p>Try changing your search or category filter.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CUSTOMER ORDERS -->
+      <section id="view-my-orders" class="app-view" data-view="my-orders" aria-labelledby="myOrdersTitle">
+        <div class="section-page">
+          <div class="page-heading"><div><p class="eyebrow">PURCHASE HISTORY</p><h1 id="myOrdersTitle">My Orders</h1><p>Track the status of orders you placed with this customer account.</p></div></div>
+          <div id="customerOrdersList" class="order-grid"></div>
+        </div>
+      </section>
+
+      <!-- OWNER INVENTORY -->
+      <section id="view-inventory" class="app-view" data-view="inventory" aria-labelledby="inventoryTitle">
+        <div class="section-page owner-page-grid">
+          <div class="page-heading full-span"><div><p class="eyebrow">OWNER CONTROL</p><h1 id="inventoryTitle">Product Inventory</h1><p>Add, edit, remove, price, categorize, and manage stock for every listing.</p></div><button id="newProductButton" class="primary-button" type="button">+ Add New Product</button></div>
+
+          <div class="panel inventory-editor-panel">
+            <div class="panel-heading"><div><p class="eyebrow">PRODUCT EDITOR</p><h2 id="productFormTitle">Add product</h2></div><button id="cancelEditButton" class="text-button hidden" type="button">Cancel edit</button></div>
+            <form id="productForm" class="stack-form" novalidate>
+              <input id="editingProductId" type="hidden" />
+              <label class="image-upload" for="productImage">
+                <input id="productImage" type="file" accept="image/png,image/jpeg,image/webp" />
+                <div id="imagePreview" class="image-preview"><strong>+ Insert product image</strong><span>JPG, PNG, or WEBP. Use images under 1.5 MB for this browser demo.</span></div>
+              </label>
+              <button id="removeProductImage" class="small-button hidden" type="button">Remove current image</button>
+              <div class="field-grid two">
+                <label>Product name<input id="productName" type="text" required minlength="2" maxlength="90" /></label>
+                <label>Category<input id="productCategory" type="text" required minlength="2" maxlength="40" placeholder="e.g. Shirts" /></label>
+              </div>
+              <div class="field-grid three">
+                <label>Size<input id="productSize" type="text" required maxlength="20" placeholder="M / 32 / Free size" /></label>
+                <label>Condition<select id="productCondition" required><option>Like New</option><option>Excellent</option><option>Very Good</option><option>Good</option><option>Fair</option></select></label>
+                <label>Stock<input id="productStock" type="number" required min="0" max="999" value="1" /></label>
+              </div>
+              <label>Price (PHP)<input id="productPrice" type="number" required min="1" step="0.01" /></label>
+              <label>Description / flaw notes<textarea id="productDescription" rows="4" required minlength="4" maxlength="700" placeholder="Describe the item, fit, fabric, and any visible flaws."></textarea></label>
+              <p id="productFormError" class="form-error" role="alert"></p>
+              <button id="saveProductButton" class="primary-button full" type="submit">Publish product</button>
+            </form>
+          </div>
+
+          <div class="panel inventory-list-panel">
+            <div class="panel-heading"><div><p class="eyebrow">LIVE LISTINGS</p><h2>Current products</h2></div><span id="inventoryCount" class="pill">0 items</span></div>
+            <div id="inventoryList" class="inventory-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- OWNER ORDERS -->
+      <section id="view-orders" class="app-view" data-view="orders" aria-labelledby="ownerOrdersTitle">
+        <div class="section-page">
+          <div class="page-heading"><div><p class="eyebrow">FULFILLMENT</p><h1 id="ownerOrdersTitle">Customer Orders</h1><p>Review shipment details, verify payment type, update order status, and print shipping slips.</p></div><button id="exportOrdersButton" class="secondary-button" type="button">Export CSV</button></div>
+          <div class="metric-row">
+            <article><span>Total orders</span><strong id="metricOrders">0</strong></article>
+            <article><span>Pending</span><strong id="metricPending">0</strong></article>
+            <article><span>Delivered</span><strong id="metricDelivered">0</strong></article>
+            <article><span>Revenue</span><strong id="metricRevenue">₱0.00</strong></article>
+          </div>
+          <div id="ownerOrdersList" class="order-grid"></div>
+        </div>
+      </section>
+
+      <!-- OWNER FEEDBACK -->
+      <section id="view-feedback" class="app-view" data-view="feedback" aria-labelledby="feedbackTitle">
+        <div class="section-page">
+          <div class="page-heading"><div><p class="eyebrow">CUSTOMER VOICE</p><h1 id="feedbackTitle">Ratings & Feedback</h1><p>Read customer ratings and product feedback. Customers can submit one review per product and update it later.</p></div></div>
+          <div class="metric-row">
+            <article><span>Reviews</span><strong id="metricReviews">0</strong></article>
+            <article><span>Average rating</span><strong id="metricAverageRating">—</strong></article>
+            <article><span>5-star reviews</span><strong id="metricFiveStar">0</strong></article>
+          </div>
+          <div id="feedbackList" class="feedback-list"></div>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section id="view-settings" class="app-view" data-view="settings" aria-labelledby="settingsTitle">
+        <div class="section-page settings-page">
+          <div class="page-heading"><div><p class="eyebrow">PERSONALIZE</p><h1 id="settingsTitle">Website Settings</h1><p>Change the interface theme and brand colors. Owner accounts also have access to store configuration.</p></div></div>
+
+          <div class="settings-grid">
+            <form id="appearanceForm" class="panel stack-form" novalidate>
+              <div class="panel-heading"><div><p class="eyebrow">APPEARANCE</p><h2>Theme & colors</h2></div></div>
+              <label>Display mode<select id="themeSelect"><option value="dark">Dark mode</option><option value="light">Light mode</option></select></label>
+              <div class="field-grid two color-fields">
+                <label>Primary color<input id="primaryColor" type="color" value="#a754b5" /></label>
+                <label>Secondary color<input id="secondaryColor" type="color" value="#f5f1f7" /></label>
+              </div>
+              <div class="theme-preview"><span class="preview-primary"></span><span class="preview-secondary"></span><b>Live preview</b></div>
+              <div class="button-row"><button class="primary-button" type="submit">Save appearance</button><button id="resetAppearanceButton" class="secondary-button" type="button">Reset</button></div>
+            </form>
+
+            <form id="storeSettingsForm" class="panel stack-form owner-only" novalidate>
+              <div class="panel-heading"><div><p class="eyebrow">OWNER SETTINGS</p><h2>Store configuration</h2></div></div>
+              <label>Store name<input id="settingStoreName" type="text" required minlength="2" maxlength="50" /></label>
+              <label>Tagline<input id="settingTagline" type="text" required maxlength="90" /></label>
+              <label>Announcement<input id="settingAnnouncement" type="text" required maxlength="120" /></label>
+              <div class="field-grid two">
+                <label>GCash account name<input id="settingGcashName" type="text" required maxlength="70" /></label>
+                <label>GCash number<input id="settingGcashNumber" type="text" required maxlength="30" /></label>
+              </div>
+              <div class="field-grid two">
+                <label>Standard shipping fee (PHP)<input id="settingShippingFee" type="number" required min="0" step="0.01" /></label>
+                <label>Store contact number<input id="settingContactNumber" type="text" maxlength="30" placeholder="09XXXXXXXXX" /></label>
+              </div>
+              <button class="primary-button" type="submit">Save store settings</button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Product details / rating -->
+  <div id="productModal" class="modal" aria-hidden="true">
+    <button class="modal-backdrop" type="button" data-close-modal="productModal" aria-label="Close product details"></button>
+    <section class="modal-card product-modal-card" role="dialog" aria-modal="true" aria-labelledby="productModalTitle">
+      <button class="modal-close" type="button" data-close-modal="productModal" aria-label="Close">×</button>
+      <div id="productModalContent"></div>
+    </section>
+  </div>
+
+  <!-- Cart -->
+  <aside id="cartDrawer" class="drawer" aria-hidden="true">
+    <button class="drawer-backdrop" type="button" data-close-cart aria-label="Close cart"></button>
+    <section class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+      <header class="drawer-header"><div><p class="eyebrow">YOUR PICKS</p><h2 id="cartTitle">Shopping Cart</h2></div><button class="modal-close" type="button" data-close-cart aria-label="Close cart">×</button></header>
+      <div id="cartItems" class="cart-items"></div>
+      <footer class="cart-footer">
+        <div class="summary-line"><span>Subtotal</span><b id="cartSubtotal">₱0.00</b></div>
+        <div class="summary-line"><span>Shipping</span><b id="cartShipping">₱0.00</b></div>
+        <div class="summary-line grand"><span>Total</span><b id="cartTotal">₱0.00</b></div>
+        <button id="checkoutButton" class="primary-button full" type="button">Proceed to Checkout</button>
+      </footer>
+    </section>
+  </aside>
+
+  <!-- Checkout -->
+  <div id="checkoutModal" class="modal" aria-hidden="true">
+    <button class="modal-backdrop" type="button" data-close-modal="checkoutModal" aria-label="Close checkout"></button>
+    <section class="modal-card checkout-card" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
+      <div class="modal-header"><div><p class="eyebrow">ORDER DETAILS</p><h2 id="checkoutTitle">Checkout</h2></div><button class="modal-close" type="button" data-close-modal="checkoutModal" aria-label="Close checkout">×</button></div>
+      <form id="checkoutForm" novalidate>
+        <div class="checkout-grid">
+          <div class="checkout-form-area">
+            <h3>Recipient information</h3>
+            <div class="field-grid two"><label>Full name<input id="checkoutFullName" name="fullName" type="text" required minlength="2" maxlength="70" autocomplete="name" /></label><label>Mobile number<input name="phone" type="tel" required maxlength="30" placeholder="09XXXXXXXXX" autocomplete="tel" /></label></div>
+            <label>Email address<input id="checkoutEmail" name="email" type="email" required autocomplete="email" readonly /></label>
+
+            <h3>Shipment details</h3>
+            <label>House / Unit / Street<input name="street" type="text" required maxlength="120" autocomplete="street-address" /></label>
+            <div class="field-grid two"><label>Country<select id="checkoutCountry" name="country" required><option value="Philippines">Philippines</option></select></label><label>Province<select id="checkoutProvince" name="province" required><option value="">Select province</option></select></label></div>
+            <div class="field-grid two"><label>City / Municipality<select id="checkoutCity" name="city" required disabled><option value="">Select province first</option></select></label><label>Barangay<select id="checkoutBarangay" name="barangay" required disabled><option value="">Select city first</option></select></label></div>
+            <div class="field-grid two"><label>Postal code<input name="postalCode" type="text" required maxlength="12" inputmode="numeric" placeholder="e.g. 1000" /></label><label>Region <input id="checkoutRegion" name="region" type="text" readonly placeholder="Filled automatically" /></label></div>
+            <label>Delivery notes <small>(optional)</small><textarea name="deliveryNotes" rows="3" maxlength="250" placeholder="Landmark, gate color, or courier instructions"></textarea></label>
+
+            <h3>Payment method</h3>
+            <div class="payment-options">
+              <label class="payment-option"><input type="radio" name="paymentMethod" value="gcash" checked /><span><b>GCash</b><small>Send payment to the store account and enter the reference number.</small></span></label>
+              <label class="payment-option"><input type="radio" name="paymentMethod" value="cod" /><span><b>Cash on Delivery</b><small>Pay the courier when the order arrives.</small></span></label>
+            </div>
+            <div id="gcashBox" class="gcash-box"><span>Send payment to</span><b id="checkoutGcashName">C'JUDE CO.</b><strong id="checkoutGcashNumber">09XX XXX XXXX</strong><label>GCash reference number<input id="gcashReference" name="gcashReference" type="text" maxlength="50" placeholder="Reference number" /></label></div>
+            <label class="check-row"><input name="confirmDetails" type="checkbox" required /> <span>I confirm that my shipment and payment details are correct.</span></label>
+            <p id="checkoutError" class="form-error" role="alert"></p>
+          </div>
+
+          <aside class="checkout-summary"><p class="eyebrow">ORDER SUMMARY</p><div id="checkoutItems" class="checkout-items"></div><div class="summary-line"><span>Subtotal</span><b id="checkoutSubtotal">₱0.00</b></div><div class="summary-line"><span>Shipping</span><b id="checkoutShipping">₱0.00</b></div><div class="summary-line grand"><span>Total</span><b id="checkoutTotal">₱0.00</b></div><button class="primary-button full" type="submit">Place Order</button></aside>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <!-- Order success -->
+  <div id="successModal" class="modal" aria-hidden="true">
+    <button class="modal-backdrop" type="button" data-close-modal="successModal" aria-label="Close"></button>
+    <section class="modal-card success-card" role="dialog" aria-modal="true" aria-labelledby="successTitle">
+      <div class="success-icon">✓</div>
+      <p class="eyebrow">ORDER CONFIRMED</p>
+      <h2 id="successTitle">Your order has been recorded.</h2>
+      <p>Order number: <strong id="successOrderId"></strong></p>
+      <div id="successSummary" class="success-summary"></div>
+      <div class="button-row center"><button id="copyOrderButton" class="secondary-button" type="button">Copy Order Details</button><button class="primary-button" type="button" data-close-modal="successModal">Continue Shopping</button></div>
+    </section>
+  </div>
+
+  <!-- Supabase JS client (pinned), then local config built from .env by the server -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script src="/env.js"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/database.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

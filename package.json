@@ -1,0 +1,15 @@
+{
+  "name": "cjude-local-store",
+  "version": "1.0.0",
+  "private": true,
+  "description": "C'JUDE CO. storefront with local Supabase backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "create-owner": "node scripts/create-owner.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

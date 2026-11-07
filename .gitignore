@@ -3,5 +3,6 @@ data/store.json.tmp
 .env
 .env.admin
 node_modules/
+dist/
 supabase/.temp/
 supabase/.branches/

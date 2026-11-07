@@ -2,8 +2,9 @@
 
 The storefront (same design, same screens) now stores everything in a **local Supabase** database:
 accounts, products, product photos, ratings/feedback, store settings and orders.
-`server.py` / `server.js` are now just a static file server that also serves the address lookup
-(`/api/locations/*`) and the public Supabase config (`/env.js`).
+`server.py` / `server.js` serve the site locally, including address lookup (`/api/locations/*`) and the
+public Supabase config (`/env.js`). Vercel serves the static frontend and provides matching serverless
+routes for address lookup and Supabase config.
 
 ```
 index.html  app.js  styles.css        existing frontend (app.js now calls Supabase)
@@ -39,7 +40,7 @@ server.py  server.js                  static server (+ /env.js, + address lookup
    *No Node?* In Studio → Authentication → Add user, then in the SQL editor run
    `update public.profiles set role = 'owner' where email = 'you@example.com';`
 
-## Run it
+## Run locally
 
 ```
 python server.py        # or: npm start
@@ -49,6 +50,27 @@ Open **http://localhost:3000**. Studio (view/edit tables, users, storage): **htt
 Stop: `Ctrl+C` for the web server, then `supabase stop`.
 Reset everything to a clean database: `supabase db reset` (this deletes all users, so re-run
 `node scripts/create-owner.js` afterwards).
+
+## Deploy to Vercel
+
+1. Use a **hosted Supabase project**; the local Supabase instance on your computer is not reachable
+   from Vercel. Apply the SQL migration and seed data to that project using the Supabase dashboard or
+   Supabase CLI.
+2. In Vercel, import this GitHub repository. The included `vercel.json` runs `npm run build` and
+   publishes the generated `dist/` storefront.
+3. In the Vercel project settings, add these environment variables for Production (and Preview if
+   needed):
+   - `SUPABASE_URL`: the hosted project's Project URL.
+   - `SUPABASE_ANON_KEY`: the hosted project's publishable/anon key.
+4. Redeploy after setting the variables. Create the owner account in the hosted Supabase project using
+   its dashboard or the owner setup script configured locally with that project's `SUPABASE_URL` and
+   service-role key. Never add the service-role key to Vercel's public frontend configuration.
+5. In Supabase Authentication URL settings, set the deployed Vercel URL as the Site URL and add your
+   Vercel deployment URL(s) to the allowed redirect URLs.
+
+The storefront can be statically deployed without the environment variables, but database-backed
+features require them. The Vercel `/api/locations/*` routes use the same small built-in location list
+as the local Node server.
 
 ## Phone on the same Wi-Fi
 
@@ -79,7 +101,6 @@ networks in Windows Firewall. Guest Wi-Fi often blocks this.
   are no longer used by the site and can be deleted.
 - `assets/cjude-logo.svg` is referenced by `index.html` but was not in the files provided; keep your copy in `assets/`.
 - GCash is still reference-number capture only; real GCash checkout needs a merchant account and server-side credentials.
-- Rename `_gitignore` to `.gitignore`.
 
 ## Manual test checklist
 

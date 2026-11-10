@@ -1,10 +1,11 @@
 # C'JUDE CO. — storefront + local Supabase
 
-The storefront (same design, same screens) now stores everything in a **local Supabase** database:
-accounts, products, product photos, ratings/feedback, store settings and orders.
+The storefront (same design, same screens) uses Supabase for its data: local Supabase during development
+and the connected Supabase project when deployed. It stores accounts, products, product photos,
+ratings/feedback, store settings and orders.
 `server.py` / `server.js` serve the site locally, including address lookup (`/api/locations/*`) and the
-public Supabase config (`/env.js`). Vercel serves the static frontend and provides serverless routes
-for address lookup.
+public Supabase config (`/env.js`). Vercel serves the frontend and public Supabase config as static files,
+with serverless routes for address lookup.
 
 ```
 index.html  app.js  styles.css        existing frontend (app.js now calls Supabase)
@@ -98,7 +99,6 @@ networks in Windows Firewall. Guest Wi-Fi often blocks this.
   present and the country is the Philippines, but it cannot verify a barangay against PSGC.
 - The old `/api/auth/*` and `/api/orders` endpoints in `server.py` / `server.js` and `data/store.json`
   are no longer used by the site and can be deleted.
-- `assets/cjude-logo.svg` is referenced by `index.html` but was not in the files provided; keep your copy in `assets/`.
 - GCash is still reference-number capture only; real GCash checkout needs a merchant account and server-side credentials.
 
 ## Manual test checklist

@@ -3,8 +3,8 @@
 The storefront (same design, same screens) now stores everything in a **local Supabase** database:
 accounts, products, product photos, ratings/feedback, store settings and orders.
 `server.py` / `server.js` serve the site locally, including address lookup (`/api/locations/*`) and the
-public Supabase config (`/env.js`). Vercel serves the static frontend and provides matching serverless
-routes for address lookup and Supabase config.
+public Supabase config (`/env.js`). Vercel serves the static frontend and provides serverless routes
+for address lookup.
 
 ```
 index.html  app.js  styles.css        existing frontend (app.js now calls Supabase)
@@ -50,7 +50,6 @@ Open **http://localhost:3000**. Studio (view/edit tables, users, storage): **htt
 Stop: `Ctrl+C` for the web server, then `supabase stop`.
 Reset everything to a clean database: `supabase db reset` (this deletes all users, so re-run
 `node scripts/create-owner.js` afterwards).
-
 ## Deploy to Vercel
 
 1. Apply `supabase/migrations/20261107000000_init_schema.sql` in the hosted project's SQL Editor, then

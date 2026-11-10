@@ -53,24 +53,24 @@ Reset everything to a clean database: `supabase db reset` (this deletes all user
 
 ## Deploy to Vercel
 
-1. Use a **hosted Supabase project**; the local Supabase instance on your computer is not reachable
-   from Vercel. Apply the SQL migration and seed data to that project using the Supabase dashboard or
-   Supabase CLI.
-2. In Vercel, import this GitHub repository. The included `vercel.json` runs `npm run build` and
+1. Apply `supabase/migrations/20261107000000_init_schema.sql` in the hosted project's SQL Editor, then
+   apply `supabase/seed.sql` if you want the sample products. The migration creates the profiles,
+   products, reviews, store settings, orders and order items tables, their access policies, and the
+   product image bucket.
+2. The public browser configuration is in `env.js`. It contains only the Supabase project URL and
+   publishable key; those values are intended to be public and database access is restricted by RLS.
+   The build copies this file into `dist/`, so `/env.js` is served as a static file rather than invoking
+   a Vercel function. This avoids a runtime function dependency for app startup.
+3. In Vercel, import this GitHub repository. The included `vercel.json` runs `npm run build` and
    publishes the generated `dist/` storefront.
-3. In the Vercel project settings, add these environment variables for Production (and Preview if
-   needed):
-   - `SUPABASE_URL`: the hosted project's Project URL.
-   - `SUPABASE_ANON_KEY`: the hosted project's publishable/anon key.
-4. Redeploy after setting the variables. Create the owner account in the hosted Supabase project using
-   its dashboard or the owner setup script configured locally with that project's `SUPABASE_URL` and
-   service-role key. Never add the service-role key to Vercel's public frontend configuration.
+4. Create an owner account in the hosted Supabase project using its dashboard or the owner setup
+   script configured locally with that project's `SUPABASE_URL` and service-role key. Never add the
+   service-role key to Vercel or `env.js`.
 5. In Supabase Authentication URL settings, set the deployed Vercel URL as the Site URL and add your
    Vercel deployment URL(s) to the allowed redirect URLs.
 
-The storefront can be statically deployed without the environment variables, but database-backed
-features require them. The Vercel `/api/locations/*` routes use the same small built-in location list
-as the local Node server.
+To connect a different Supabase project, update `env.js` with its Project URL and publishable key.
+The Vercel `/api/locations/*` routes use the same small built-in location list as the local Node server.
 
 ## Phone on the same Wi-Fi
 

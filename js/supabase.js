@@ -23,7 +23,7 @@
         url = target.toString().replace(/\/$/, '');
       }
       client = window.supabase.createClient(url, anonKey, {
-        auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false }
+        auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
       });
     } catch (error) {
       configError = `Could not start the Supabase client (check SUPABASE_URL in .env): ${error.message}`;

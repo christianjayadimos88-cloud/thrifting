@@ -28,8 +28,11 @@
 
   const $ = (id) => document.getElementById(id);
   const els = {
-    authScreen: $('authScreen'), appShell: $('appShell'), loginTab: $('loginTab'), signupTab: $('signupTab'),
-    loginForm: $('loginForm'), signupForm: $('signupForm'), loginEmail: $('loginEmail'), loginPassword: $('loginPassword'), loginError: $('loginError'),
+    authScreen: $('authScreen'), appShell: $('appShell'), authTabs: document.querySelector('.auth-tabs'), loginTab: $('loginTab'), signupTab: $('signupTab'),
+    loginForm: $('loginForm'), signupForm: $('signupForm'), forgotPasswordForm: $('forgotPasswordForm'), resetPasswordForm: $('resetPasswordForm'),
+    loginEmail: $('loginEmail'), loginPassword: $('loginPassword'), loginError: $('loginError'),
+    forgotPasswordEmail: $('forgotPasswordEmail'), forgotPasswordError: $('forgotPasswordError'), forgotPasswordStatus: $('forgotPasswordStatus'),
+    resetPassword: $('resetPassword'), resetPasswordConfirm: $('resetPasswordConfirm'), resetPasswordError: $('resetPasswordError'),
     signupName: $('signupName'), signupEmail: $('signupEmail'), signupPassword: $('signupPassword'), signupConfirm: $('signupConfirm'), signupTerms: $('signupTerms'), signupError: $('signupError'),
     accountButton: $('accountButton'), accountMenu: $('accountMenu'), logoutButton: $('logoutButton'), accountInitial: $('accountInitial'), accountName: $('accountName'), accountRole: $('accountRole'), menuAccountName: $('menuAccountName'), menuAccountEmail: $('menuAccountEmail'),
     headerStoreName: $('headerStoreName'), headerTagline: $('headerTagline'), announcementBar: $('announcementBar'),
@@ -260,14 +263,26 @@
 
   function switchAuthMode(mode) {
     const login = mode === 'login';
+    const signup = mode === 'signup';
+    const forgotPassword = mode === 'forgot';
+    const resetPassword = mode === 'reset';
+    const showAuthTabs = login || signup;
+    els.authTabs.classList.toggle('hidden', !showAuthTabs);
     els.loginTab.classList.toggle('active', login);
-    els.signupTab.classList.toggle('active', !login);
+    els.signupTab.classList.toggle('active', signup);
     els.loginTab.setAttribute('aria-selected', String(login));
-    els.signupTab.setAttribute('aria-selected', String(!login));
+    els.signupTab.setAttribute('aria-selected', String(signup));
+    els.loginTab.classList.toggle('hidden', !showAuthTabs);
+    els.signupTab.classList.toggle('hidden', !showAuthTabs);
     els.loginForm.classList.toggle('hidden', !login);
-    els.signupForm.classList.toggle('hidden', login);
+    els.signupForm.classList.toggle('hidden', !signup);
+    els.forgotPasswordForm.classList.toggle('hidden', !forgotPassword);
+    els.resetPasswordForm.classList.toggle('hidden', !resetPassword);
     setFormError(els.loginError);
     setFormError(els.signupError);
+    setFormError(els.forgotPasswordError);
+    setFormError(els.resetPasswordError);
+    if (!forgotPassword) els.forgotPasswordStatus.textContent = '';
   }
 
   function renderRoleUI() {
@@ -332,6 +347,47 @@
       toast('Account created. You can now log in.');
     } catch (error) {
       setFormError(els.signupError, error.message);
+    }
+  }
+
+  async function handlePasswordResetRequest(event) {
+    event.preventDefault();
+    setFormError(els.forgotPasswordError);
+    els.forgotPasswordStatus.textContent = '';
+    if (!validateForm(els.forgotPasswordForm, els.forgotPasswordError)) return;
+
+    try {
+      await withLoading(
+        () => window.CJude.auth.sendPasswordReset(normalizeEmail(els.forgotPasswordEmail.value)),
+        els.forgotPasswordForm
+      );
+      els.forgotPasswordStatus.textContent = 'If an account exists for that email, a password-reset link has been sent.';
+    } catch (error) {
+      setFormError(els.forgotPasswordError, error.message);
+    }
+  }
+
+  async function handlePasswordUpdate(event) {
+    event.preventDefault();
+    setFormError(els.resetPasswordError);
+    if (!validateForm(els.resetPasswordForm, els.resetPasswordError)) return;
+    if (els.resetPassword.value !== els.resetPasswordConfirm.value) {
+      setFormError(els.resetPasswordError, 'Passwords do not match.');
+      els.resetPasswordConfirm.focus();
+      return;
+    }
+
+    try {
+      const user = await withLoading(
+        () => window.CJude.auth.updatePassword(els.resetPassword.value),
+        els.resetPasswordForm
+      );
+      saveSession(user);
+      els.resetPasswordForm.reset();
+      await showApp();
+      toast('Your password has been updated.');
+    } catch (error) {
+      setFormError(els.resetPasswordError, error.message);
     }
   }
 
@@ -969,8 +1025,15 @@
   // ---------- Event listeners ----------
   els.loginTab.addEventListener('click', () => switchAuthMode('login'));
   els.signupTab.addEventListener('click', () => switchAuthMode('signup'));
+  $('forgotPasswordButton').addEventListener('click', () => {
+    els.forgotPasswordEmail.value = els.loginEmail.value;
+    switchAuthMode('forgot');
+  });
+  $('backToLoginButton').addEventListener('click', () => switchAuthMode('login'));
   els.loginForm.addEventListener('submit', handleLogin);
   els.signupForm.addEventListener('submit', handleSignup);
+  els.forgotPasswordForm.addEventListener('submit', handlePasswordResetRequest);
+  els.resetPasswordForm.addEventListener('submit', handlePasswordUpdate);
 
   document.addEventListener('click', (event) => {
     const target = event.target.closest('button');
@@ -1096,12 +1159,21 @@
   void populateProvinces().catch((error) => toast(error.message, 'error'));
 
   if (!db || window.CJude.configError) {
-    showAuth('login');
-    setFormError(els.loginError, (window.CJude && window.CJude.configError) || 'The Supabase scripts did not load.');
+    const recoveringPassword = window.CJude.auth && window.CJude.auth.isPasswordRecovery();
+    showAuth(recoveringPassword ? 'reset' : 'login');
+    setFormError(
+      recoveringPassword ? els.resetPasswordError : els.loginError,
+      (window.CJude && window.CJude.configError) || 'The Supabase scripts did not load.'
+    );
   } else {
     window.CJude.auth.onSignedOut(() => { if (session) forceLogout('You were signed out. Please log in again.'); });
+    window.CJude.auth.onPasswordRecovery(() => showAuth('reset'));
     (async () => {
       try {
+        if (window.CJude.auth.isPasswordRecovery()) {
+          showAuth('reset');
+          return;
+        }
         const user = await withLoading(() => window.CJude.auth.restoreSession());
         if (user) { saveSession(user); await showApp(); }
         else showAuth('login');

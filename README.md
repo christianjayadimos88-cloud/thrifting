@@ -82,6 +82,9 @@ networks in Windows Firewall. Guest Wi-Fi often blocks this.
 
 - Sign-ups are always **customers**. The owner role can only be granted by an existing owner, the
   service role, or SQL in Studio; a database trigger blocks everyone else, even if they craft requests.
+- Password recovery is handled in the storefront: request a link from the login screen, open it on
+  the configured Site URL, then set a new password. Add each production or local origin used for recovery
+  to Supabase Authentication's allowed redirect URLs.
 - **Row Level Security** is on for every table. Customers can read the shop and their own orders, and
   create/edit/delete only their own review. Owners can manage products, photos, settings and order status.
 - **Orders are created by the `place_order()` database function**, not by direct inserts. It reads prices
@@ -104,8 +107,9 @@ networks in Windows Firewall. Guest Wi-Fi often blocks this.
 ## Manual test checklist
 
 1. Sign up → log in as a customer → add to cart → checkout (GCash needs a reference; COD doesn't).
-2. Customer: leave/update/delete a review; "My Orders" shows the order; stock dropped by the quantity.
-3. Log in as owner: add a product with a photo, edit it, delete it (confirmation appears); change an order's status; cancel it and see stock return; edit store settings.
-4. Studio → Table editor: rows appear in `profiles`, `orders`, `order_items`, `reviews`, `products`.
-5. As a customer, in the browser console try `CJude.client().from('orders').select()` (only yours) and
+2. Request a password-reset link from the login screen, open it, and save a new password.
+3. Customer: leave/update/delete a review; "My Orders" shows the order; stock dropped by the quantity.
+4. Log in as owner: add a product with a photo, edit it, delete it (confirmation appears); change an order's status; cancel it and see stock return; edit store settings.
+5. Studio → Table editor: rows appear in `profiles`, `orders`, `order_items`, `reviews`, `products`.
+6. As a customer, in the browser console try `CJude.client().from('orders').select()` (only yours) and
    `CJude.client().from('products').delete().neq('stock', -1)` (deletes nothing).

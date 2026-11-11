@@ -52,6 +52,41 @@
           <p id="loginError" class="form-error" role="alert"></p>
           <button class="primary-button full" type="submit">Log in</button>
           <p class="microcopy">No role selector is shown. Access level is assigned automatically after a successful login.</p>
+          <button id="forgotPasswordButton" class="text-button" type="button">Forgot password?</button>
+        </form>
+
+        <form id="forgotPasswordForm" class="auth-form hidden" novalidate>
+          <div class="form-heading">
+            <p class="eyebrow">ACCOUNT RECOVERY</p>
+            <h2>Reset your password</h2>
+            <p>Enter your account email and we’ll send you a secure password-reset link.</p>
+          </div>
+          <label>Email address
+            <input id="forgotPasswordEmail" type="email" autocomplete="email" required placeholder="you@example.com" />
+          </label>
+          <p id="forgotPasswordError" class="form-error" role="alert"></p>
+          <p id="forgotPasswordStatus" class="form-status" role="status" aria-live="polite"></p>
+          <button class="primary-button full" type="submit">Send reset link</button>
+          <button id="backToLoginButton" class="text-button" type="button">Back to log in</button>
+        </form>
+
+        <form id="resetPasswordForm" class="auth-form hidden" novalidate>
+          <div class="form-heading">
+            <p class="eyebrow">ACCOUNT RECOVERY</p>
+            <h2>Choose a new password</h2>
+            <p>Your password must be at least 8 characters. Use a unique password you haven’t used elsewhere.</p>
+          </div>
+          <label>New password
+            <div class="password-field">
+              <input id="resetPassword" type="password" autocomplete="new-password" required minlength="8" maxlength="80" placeholder="At least 8 characters" />
+              <button class="text-button password-toggle" type="button" data-toggle-password="resetPassword">Show</button>
+            </div>
+          </label>
+          <label>Confirm new password
+            <input id="resetPasswordConfirm" type="password" autocomplete="new-password" required minlength="8" maxlength="80" placeholder="Repeat your new password" />
+          </label>
+          <p id="resetPasswordError" class="form-error" role="alert"></p>
+          <button class="primary-button full" type="submit">Save new password</button>
         </form>
 
         <form id="signupForm" class="auth-form hidden" novalidate>

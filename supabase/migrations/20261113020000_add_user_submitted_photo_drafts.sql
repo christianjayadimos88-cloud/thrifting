@@ -1,4 +1,6 @@
 -- Replace the earlier concept-only listings with the actual photos supplied by the owner.
+begin;
+
 delete from public.products
  where status = 'draft'
    and image_url in (
@@ -321,3 +323,5 @@ where not exists (
     from public.products p
    where p.image_url = v.image_url
 );
+
+commit;

@@ -28,7 +28,7 @@
 
   const $ = (id) => document.getElementById(id);
   const els = {
-    authScreen: $('authScreen'), appShell: $('appShell'), authTabs: document.querySelector('.auth-tabs'), loginTab: $('loginTab'), signupTab: $('signupTab'),
+    authScreen: $('authScreen'), authLogoWrap: document.querySelector('.auth-logo-wrap'), appShell: $('appShell'), authTabs: document.querySelector('.auth-tabs'), loginTab: $('loginTab'), signupTab: $('signupTab'),
     loginForm: $('loginForm'), signupForm: $('signupForm'), forgotPasswordForm: $('forgotPasswordForm'), resetPasswordForm: $('resetPasswordForm'),
     loginEmail: $('loginEmail'), loginPassword: $('loginPassword'), loginError: $('loginError'),
     forgotPasswordEmail: $('forgotPasswordEmail'), forgotPasswordError: $('forgotPasswordError'), forgotPasswordStatus: $('forgotPasswordStatus'),
@@ -207,6 +207,9 @@
     els.authScreen.classList.remove('hidden');
     els.appShell.classList.add('hidden');
     els.appShell.setAttribute('aria-hidden', 'true');
+    els.authLogoWrap.classList.remove('is-entering');
+    void els.authLogoWrap.offsetWidth;
+    els.authLogoWrap.classList.add('is-entering');
     switchAuthMode(mode);
     closeAccountMenu();
   }

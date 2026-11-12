@@ -59,9 +59,10 @@ Reset everything to a clean database: `supabase db reset` (this deletes all user
    apply `supabase/seed.sql` if you want the sample products. The migrations create the profiles,
    products, reviews, store settings, orders and order items tables, their access policies, the product
    image bucket, and owner-only product drafts. Drafts may omit price and are hidden from customers.
-   The November 12, 2026 photo-item migrations add the photo-based draft listings. The supplied upload
-   contained 25 files, including exact duplicate copies; all 20 distinct photos are represented in the
-   storefront, with the remaining eleven item photos added by `20261112230000_add_remaining_photo_items.sql`.
+   The November 12, 2026 photo-item migrations add the photo-based draft listings. The recovered upload
+   folder contains 24 files, including four exact duplicate copies; all 20 distinct photos recovered
+   so far are represented in the storefront. The eleven additional item photos are added by
+   `20261112230000_add_remaining_photo_items.sql`.
 2. The public browser configuration is in `env.js`. It contains only the Supabase project URL and
    publishable key; those values are intended to be public and database access is restricted by RLS.
    The build copies this file into `dist/`, so `/env.js` is served as a static file rather than invoking

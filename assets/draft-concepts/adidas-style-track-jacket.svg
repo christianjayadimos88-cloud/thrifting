@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 720" role="img" aria-labelledby="title desc">
+  <title id="title">Three-stripe track jacket concept illustration</title>
+  <desc id="desc">Original illustrated secondhand track jacket concept. Brand and authenticity unverified.</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#29212e"/><stop offset="1" stop-color="#100f14"/></linearGradient>
+    <linearGradient id="cloth" x2=".8" y2="1"><stop stop-color="#293143"/><stop offset=".5" stop-color="#111823"/><stop offset="1" stop-color="#080c12"/></linearGradient>
+    <linearGradient id="shine" x2="1"><stop stop-color="#fff" stop-opacity=".16"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".2"/></linearGradient>
+    <pattern id="grain" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M0 8 8 0" stroke="#fff" stroke-opacity=".035"/></pattern>
+    <filter id="shadow" x="-.3" y="-.2" width="1.6" height="1.6"><feDropShadow dx="0" dy="20" stdDeviation="18" flood-color="#000" flood-opacity=".45"/></filter>
+  </defs>
+  <rect width="640" height="720" rx="34" fill="url(#bg)"/>
+  <circle cx="520" cy="235" r="180" fill="#a754b5" opacity=".09"/>
+  <text x="36" y="54" fill="#d8a8df" font-family="Arial,sans-serif" font-size="15" font-weight="700" letter-spacing="3">C'JUDE CO. / DRAFT CONCEPT</text>
+  <g filter="url(#shadow)" stroke="#657083" stroke-width="4" stroke-linejoin="round">
+    <path d="m226 166 62-34h64l62 34 94 105-65 61-47-48v263H244V284l-47 48-65-61z" fill="url(#cloth)"/>
+    <path d="m226 166 62-34h64l62 34-28 83-66-34-66 34z" fill="#202a3b"/>
+    <path d="m130 271 68-72 47 30-58 118zM510 271l-68-72-47 30 58 118z" fill="#1a2434"/>
+    <path d="M320 215v332" stroke="#a9b2c2" stroke-width="5"/>
+    <path d="M320 217v325" stroke="#080b10" stroke-width="2"/>
+    <path d="m272 243 45-18m-41 32 37-15m-33 29 29-12M323 225l45 18m-41-4 37 15m-33-1 29 12" fill="none" stroke="#e9e9eb" stroke-width="9" stroke-linecap="round"/>
+    <path d="M251 539h138" stroke="#657083" stroke-width="7"/>
+    <path d="M252 508h26v31h-26zm111 0h26v31h-26z" fill="#151c28"/>
+    <path d="M226 166 320 214l94-48" fill="none" stroke="#7d8798" stroke-width="3"/>
+    <path d="M226 166 288 132l32 82-66 35zm188 0-62-34-32 82 66 35z" fill="url(#shine)" stroke="none"/>
+  </g>
+  <rect x="34" y="588" width="572" height="91" rx="18" fill="#0b0a0f" fill-opacity=".72" stroke="#ffffff" stroke-opacity=".12"/>
+  <text x="58" y="627" fill="#fff" font-family="Arial,sans-serif" font-size="22" font-weight="700">THREE-STRIPE TRACK JACKET</text>
+  <text x="58" y="655" fill="#d8a8df" font-family="Arial,sans-serif" font-size="14" letter-spacing="2">ILLUSTRATION · BRAND TO VERIFY</text>
+</svg>

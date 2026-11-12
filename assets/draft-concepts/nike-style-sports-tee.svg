@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 720" role="img" aria-labelledby="title desc">
+  <title id="title">Vintage sports tee concept illustration</title>
+  <desc id="desc">Original illustrated secondhand sports tee concept. Brand and authenticity unverified.</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#25263a"/><stop offset="1" stop-color="#101116"/></linearGradient>
+    <linearGradient id="cloth" x2=".8" y2="1"><stop stop-color="#f0eee8"/><stop offset=".6" stop-color="#d7d4ce"/><stop offset="1" stop-color="#aaa9ac"/></linearGradient>
+    <linearGradient id="shade" x2="1"><stop stop-color="#fff" stop-opacity=".42"/><stop offset="1" stop-color="#3a3740" stop-opacity=".08"/></linearGradient>
+    <filter id="shadow" x="-.3" y="-.2" width="1.6" height="1.6"><feDropShadow dx="0" dy="20" stdDeviation="18" flood-color="#000" flood-opacity=".46"/></filter>
+  </defs>
+  <rect width="640" height="720" rx="34" fill="url(#bg)"/>
+  <circle cx="512" cy="222" r="180" fill="#77a6d8" opacity=".1"/>
+  <text x="36" y="54" fill="#b9cee8" font-family="Arial,sans-serif" font-size="15" font-weight="700" letter-spacing="3">C'JUDE CO. / DRAFT CONCEPT</text>
+  <g filter="url(#shadow)" stroke="#85858a" stroke-width="4" stroke-linejoin="round">
+    <path d="m235 169 62-34h46l62 34 116 84-59 83-68-43v248H246V293l-68 43-59-83z" fill="url(#cloth)"/>
+    <path d="m235 169-57 167 68-43v258h-11V273l-68 39-48-59zM405 169l57 167-68-43v258h11V273l68 39 48-59z" fill="#c6c3c0"/>
+    <path d="M297 135c0 33 46 33 46 0" fill="#25263a" stroke="#777783" stroke-width="7"/>
+    <path d="M320 213c-28 32-37 64-4 91 29-19 37-51 4-91z" fill="#263650" stroke="none"/>
+    <path d="m318 268 10-12-5 20 18-7-21 23-5 13 3-20-18 5z" fill="#f3f1eb" stroke="none"/>
+    <path d="M246 543h148" stroke="#89888d" stroke-width="5"/>
+    <path d="m235 169 62-34 23 43-74 55zm170 0-62-34-23 43 74 55z" fill="url(#shade)" stroke="none"/>
+    <path d="M255 307v217m130-217v217" fill="none" stroke="#fff" stroke-opacity=".36" stroke-width="2"/>
+  </g>
+  <rect x="34" y="588" width="572" height="91" rx="18" fill="#0b0a0f" fill-opacity=".72" stroke="#ffffff" stroke-opacity=".12"/>
+  <text x="58" y="627" fill="#fff" font-family="Arial,sans-serif" font-size="22" font-weight="700">VINTAGE SPORTS TEE</text>
+  <text x="58" y="655" fill="#b9cee8" font-family="Arial,sans-serif" font-size="14" letter-spacing="2">ILLUSTRATION · BRAND TO VERIFY</text>
+</svg>

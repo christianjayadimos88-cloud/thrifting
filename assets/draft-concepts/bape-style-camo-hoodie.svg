@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 720" role="img" aria-labelledby="title desc">
+  <title id="title">Camouflage pullover hoodie concept illustration</title>
+  <desc id="desc">Original illustrated secondhand camouflage hoodie concept. Brand and authenticity unverified.</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#283021"/><stop offset="1" stop-color="#11140f"/></linearGradient>
+    <linearGradient id="cloth" x2=".7" y2="1"><stop stop-color="#768344"/><stop offset=".5" stop-color="#434b2c"/><stop offset="1" stop-color="#242b1c"/></linearGradient>
+    <pattern id="camo" width="104" height="88" patternUnits="userSpaceOnUse">
+      <path d="M3 19 24 6l16 7-5 21-25 6zm52 2 17-18 23 7 6 22-18 14-27-7zM20 61l16-18 23 8-2 23-23 11zm56-11 20-8 9 18-17 19-17-7z" fill="#252d1f" opacity=".72"/>
+      <path d="m43 2 17 5 7 17-19 9-14-14zm-35 48 19-5 7 17-12 21-17-9zm65 32 17-11 13 5 1 17-21 10z" fill="#b27c47" opacity=".55"/>
+      <path d="m26 30 13-8 16 6-4 15-18 6zm49 11 15-8 13 8-8 15-18 3z" fill="#a9aa75" opacity=".5"/>
+    </pattern>
+    <filter id="shadow" x="-.3" y="-.2" width="1.6" height="1.6"><feDropShadow dx="0" dy="20" stdDeviation="18" flood-color="#000" flood-opacity=".46"/></filter>
+    <mask id="hoodie"><path d="m225 174 63-35h64l63 35 99 104-68 64-51-55v246H245V287l-51 55-68-64z" fill="#fff"/></mask>
+  </defs>
+  <rect width="640" height="720" rx="34" fill="url(#bg)"/>
+  <circle cx="510" cy="234" r="180" fill="#a1ad63" opacity=".09"/>
+  <text x="36" y="54" fill="#d2d79c" font-family="Arial,sans-serif" font-size="15" font-weight="700" letter-spacing="3">C'JUDE CO. / DRAFT CONCEPT</text>
+  <g filter="url(#shadow)" stroke="#7a8060" stroke-width="4" stroke-linejoin="round">
+    <path d="m225 174 63-35h64l63 35 99 104-68 64-51-55v246H245V287l-51 55-68-64z" fill="url(#cloth)"/>
+    <path d="m225 174 63-35h64l63 35 99 104-68 64-51-55v246H245V287l-51 55-68-64z" fill="url(#camo)" mask="url(#hoodie)" stroke="none"/>
+    <path d="M288 139c-2-45 62-46 64 0l-10 62h-44z" fill="#4a5234"/>
+    <path d="M288 139c0 24 64 24 64 0" fill="none" stroke="#a0a77a" stroke-width="4"/>
+    <path d="M288 197c5 31 16 46 32 46s27-15 32-46" fill="none" stroke="#272d20" stroke-width="5"/>
+    <path d="M266 368h108l-13 68h-82z" fill="#303722" stroke="#8d9069" stroke-width="3"/>
+    <path d="M320 245v96" stroke="#d0c6a1" stroke-width="4"/>
+    <circle cx="320" cy="345" r="5" fill="#d0c6a1" stroke="none"/>
+    <path d="M249 532h142" stroke="#858967" stroke-width="8"/>
+    <path d="M225 174 288 139l32 59-67 44zm190 0-63-35-32 59 67 44z" fill="#fff" fill-opacity=".08" stroke="none"/>
+  </g>
+  <rect x="34" y="588" width="572" height="91" rx="18" fill="#0b0a0f" fill-opacity=".72" stroke="#ffffff" stroke-opacity=".12"/>
+  <text x="58" y="627" fill="#fff" font-family="Arial,sans-serif" font-size="22" font-weight="700">CAMOUFLAGE PULLOVER HOODIE</text>
+  <text x="58" y="655" fill="#d2d79c" font-family="Arial,sans-serif" font-size="14" letter-spacing="2">ILLUSTRATION · BRAND TO VERIFY</text>
+</svg>

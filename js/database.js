@@ -51,7 +51,7 @@
   const mapSettings = (row) => ({
     storeName: row.store_name,
     tagline: row.tagline,
-    announcement: row.announcement,
+    announcement: row.announcement.replace(/\u00e2\u20ac\u00a2/g, '\u2022'),
     gcashName: row.gcash_name,
     gcashNumber: row.gcash_number,
     shippingFee: Number(row.shipping_fee),

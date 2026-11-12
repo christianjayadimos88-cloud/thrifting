@@ -396,6 +396,10 @@
 
   function clearLocalState() {
     saveSession(null);
+    appearance = clone(defaultAppearance);
+    saveJSON(STORAGE.appearance, appearance);
+    applyAppearance();
+    loadSettingsForms();
     products = [];
     reviews = [];
     orders = [];

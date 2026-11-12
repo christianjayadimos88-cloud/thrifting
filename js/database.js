@@ -175,18 +175,14 @@
         return rows.map(mapReview);
       },
 
-      async create({ productId, userId, stars, feedback }) {
-        const row = await unwrap(
-          sb().from('reviews').insert({ product_id: productId, user_id: userId, stars, feedback }).select('*, profiles(name)').single(),
-          { duplicate: 'You already reviewed this product. Reload and update your review instead.' }
-        );
-        return mapReview(row);
-      },
-
-      async update(id, { stars, feedback }) {
-        const row = await unwrap(sb().from('reviews').update({ stars, feedback }).eq('id', id).select('*, profiles(name)').maybeSingle());
-        if (!row) throw new Error('That review could not be updated.');
-        return mapReview(row);
+      async save({ productId, stars, feedback }) {
+        const rows = await unwrap(sb().rpc('save_review', {
+          p_product_id: productId,
+          p_stars: stars,
+          p_feedback: feedback
+        }));
+        if (!Array.isArray(rows) || rows.length !== 1) throw new Error('Your review could not be saved.');
+        return mapReview(rows[0]);
       },
 
       async remove(id) {

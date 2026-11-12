@@ -562,9 +562,11 @@
     const feedback = $('reviewFeedback')?.value.trim() || '';
     const existing = reviews.find((item) => item.productId === activeProductId && item.userId === session.id);
     try {
-      const saved = await withLoading(() => existing
-        ? db.reviews.update(existing.id, { stars: selectedReviewStars, feedback })
-        : db.reviews.create({ productId: activeProductId, userId: session.id, stars: selectedReviewStars, feedback }));
+      const saved = await withLoading(() => db.reviews.save({
+        productId: activeProductId,
+        stars: selectedReviewStars,
+        feedback
+      }));
       saved.userName = session.name;
       reviews = existing ? reviews.map((item) => item.id === saved.id ? saved : item) : [...reviews, saved];
       renderProducts();

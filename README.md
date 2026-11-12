@@ -16,7 +16,7 @@ supabase/seed.sql                     three sample products
 scripts/create-owner.js               creates the store-owner account
 .env.example  .env.admin.example      configuration templates
 server.py  server.js                  static server (+ /env.js, + address lookup)
-assets/cjude-logo.jpg                 supplied storefront and navigation logo
+assets/cjude-logo.png                 supplied storefront and navigation logo
 assets/cjude-favicon.png              browser-tab icon generated from the supplied logo
 ```
 

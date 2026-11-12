@@ -28,7 +28,8 @@
     size: row.size,
     condition: row.condition,
     stock: Number(row.stock),
-    price: Number(row.price),
+    price: row.price === null ? null : Number(row.price),
+    status: row.status,
     description: row.description,
     image: row.image_url || '',
     imagePath: row.image_path || '',
@@ -95,6 +96,7 @@
     condition: fields.condition,
     stock: fields.stock,
     price: fields.price,
+    status: fields.status,
     description: fields.description
   });
 

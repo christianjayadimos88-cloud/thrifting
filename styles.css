@@ -158,6 +158,7 @@ html[data-theme="light"] .auth-card { background: rgba(255,255,255,.9); }
 .product-badges { position: absolute; left: 10px; top: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
 .product-badges span { padding: 5px 8px; border-radius: 999px; background: rgba(7,7,8,.78); color: #fff; backdrop-filter: blur(8px); font-size: 9px; font-weight: 850; letter-spacing: .04em; }
 .product-badges .sold { background: rgba(160,34,54,.88); }
+.product-badges .draft { background: rgba(114,81,138,.92); }
 .product-info { display: grid; gap: 9px; padding: 13px; }
 .product-title-row { display: flex; align-items: start; justify-content: space-between; gap: 10px; }
 .product-title-row h3 { margin: 0; font-size: 15px; letter-spacing: -.02em; }

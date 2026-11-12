@@ -190,7 +190,7 @@
       <!-- OWNER INVENTORY -->
       <section id="view-inventory" class="app-view" data-view="inventory" aria-labelledby="inventoryTitle">
         <div class="section-page owner-page-grid">
-          <div class="page-heading full-span"><div><p class="eyebrow">OWNER CONTROL</p><h1 id="inventoryTitle">Product Inventory</h1><p>Add, edit, remove, price, categorize, and manage stock for every listing.</p></div><button id="newProductButton" class="primary-button" type="button">+ Add New Product</button></div>
+          <div class="page-heading full-span"><div><p class="eyebrow">OWNER CONTROL</p><h1 id="inventoryTitle">Product Inventory</h1><p>Add, edit, remove, price, categorize, and manage stock for every listing and draft.</p></div><button id="newProductButton" class="primary-button" type="button">+ Add New Product</button></div>
 
           <div class="panel inventory-editor-panel">
             <div class="panel-heading"><div><p class="eyebrow">PRODUCT EDITOR</p><h2 id="productFormTitle">Add product</h2></div><button id="cancelEditButton" class="text-button hidden" type="button">Cancel edit</button></div>
@@ -206,11 +206,14 @@
                 <label>Category<input id="productCategory" type="text" required minlength="2" maxlength="40" placeholder="e.g. Shirts" /></label>
               </div>
               <div class="field-grid three">
-                <label>Size<input id="productSize" type="text" required maxlength="20" placeholder="M / 32 / Free size" /></label>
-                <label>Condition<select id="productCondition" required><option>Like New</option><option>Excellent</option><option>Very Good</option><option>Good</option><option>Fair</option></select></label>
+                <label>Size<input id="productSize" type="text" required maxlength="20" placeholder="M / 32 / Free size / Unverified" /></label>
+                <label>Condition<select id="productCondition" required><option>Like New</option><option>Excellent</option><option>Very Good</option><option>Good</option><option>Fair</option><option>Needs inspection</option></select></label>
                 <label>Stock<input id="productStock" type="number" required min="0" max="999" value="1" /></label>
               </div>
-              <label>Price (PHP)<input id="productPrice" type="number" required min="1" step="0.01" /></label>
+              <div class="field-grid two">
+                <label>Price (PHP)<input id="productPrice" type="number" min="1" step="0.01" required /></label>
+                <label>Listing status<select id="productStatus"><option value="published">Published</option><option value="draft">Draft</option></select></label>
+              </div>
               <label>Description / flaw notes<textarea id="productDescription" rows="4" required minlength="4" maxlength="700" placeholder="Describe the item, fit, fabric, and any visible flaws."></textarea></label>
               <p id="productFormError" class="form-error" role="alert"></p>
               <button id="saveProductButton" class="primary-button full" type="submit">Publish product</button>
@@ -218,7 +221,7 @@
           </div>
 
           <div class="panel inventory-list-panel">
-            <div class="panel-heading"><div><p class="eyebrow">LIVE LISTINGS</p><h2>Current products</h2></div><span id="inventoryCount" class="pill">0 items</span></div>
+            <div class="panel-heading"><div><p class="eyebrow">INVENTORY</p><h2>Products & drafts</h2></div><span id="inventoryCount" class="pill">0 items</span></div>
             <div id="inventoryList" class="inventory-list"></div>
           </div>
         </div>

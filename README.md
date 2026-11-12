@@ -11,7 +11,7 @@ with serverless routes for address lookup.
 index.html  app.js  styles.css        existing frontend (app.js now calls Supabase)
 js/supabase.js  js/auth.js  js/database.js   Supabase client, auth, data access
 supabase/config.toml                  local Supabase settings
-supabase/migrations/*.sql             schema, RLS, order function, storage bucket
+supabase/migrations/*.sql             schema, RLS, drafts, order function, storage bucket
 supabase/seed.sql                     three sample products
 scripts/create-owner.js               creates the store-owner account
 .env.example  .env.admin.example      configuration templates
@@ -55,10 +55,10 @@ Reset everything to a clean database: `supabase db reset` (this deletes all user
 `node scripts/create-owner.js` afterwards).
 ## Deploy to Vercel
 
-1. Apply `supabase/migrations/20261107000000_init_schema.sql` in the hosted project's SQL Editor, then
-   apply `supabase/seed.sql` if you want the sample products. The migration creates the profiles,
-   products, reviews, store settings, orders and order items tables, their access policies, and the
-   product image bucket.
+1. Apply the files in `supabase/migrations/` to the hosted project's SQL Editor in filename order, then
+   apply `supabase/seed.sql` if you want the sample products. The migrations create the profiles,
+   products, reviews, store settings, orders and order items tables, their access policies, the product
+   image bucket, and owner-only product drafts. Drafts may omit price and are hidden from customers.
 2. The public browser configuration is in `env.js`. It contains only the Supabase project URL and
    publishable key; those values are intended to be public and database access is restricted by RLS.
    The build copies this file into `dist/`, so `/env.js` is served as a static file rather than invoking
@@ -111,7 +111,7 @@ networks in Windows Firewall. Guest Wi-Fi often blocks this.
 1. Sign up → log in as a customer → add to cart → checkout (GCash needs a reference; COD doesn't).
 2. Request a password-reset link from the login screen, open it, and save a new password.
 3. Customer: leave/update/delete a review; "My Orders" shows the order; stock dropped by the quantity.
-4. Log in as owner: add a product with a photo, edit it, delete it (confirmation appears); change an order's status; cancel it and see stock return; edit store settings.
+4. Log in as owner: save an unpriced product as a draft and confirm customers cannot see it; publish it only after confirming price, size, condition, and stock. Also edit/delete a product, change an order's status, cancel it and see stock return, and edit store settings.
 5. Studio → Table editor: rows appear in `profiles`, `orders`, `order_items`, `reviews`, `products`.
 6. As a customer, in the browser console try `CJude.client().from('orders').select()` (only yours) and
    `CJude.client().from('products').delete().neq('stock', -1)` (deletes nothing).

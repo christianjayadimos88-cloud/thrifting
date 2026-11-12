@@ -42,7 +42,7 @@
     checkoutModal: $('checkoutModal'), checkoutForm: $('checkoutForm'), checkoutFullName: $('checkoutFullName'), checkoutEmail: $('checkoutEmail'), checkoutCountry: $('checkoutCountry'), checkoutProvince: $('checkoutProvince'), checkoutCity: $('checkoutCity'), checkoutBarangay: $('checkoutBarangay'), checkoutRegion: $('checkoutRegion'), gcashBox: $('gcashBox'), gcashReference: $('gcashReference'), checkoutGcashName: $('checkoutGcashName'), checkoutGcashNumber: $('checkoutGcashNumber'), checkoutItems: $('checkoutItems'), checkoutSubtotal: $('checkoutSubtotal'), checkoutShipping: $('checkoutShipping'), checkoutTotal: $('checkoutTotal'), checkoutError: $('checkoutError'),
     successModal: $('successModal'), successOrderId: $('successOrderId'), successSummary: $('successSummary'), copyOrderButton: $('copyOrderButton'),
     customerOrdersList: $('customerOrdersList'),
-    productForm: $('productForm'), productFormTitle: $('productFormTitle'), productFormError: $('productFormError'), editingProductId: $('editingProductId'), productImage: $('productImage'), imagePreview: $('imagePreview'), removeProductImage: $('removeProductImage'), productName: $('productName'), productCategory: $('productCategory'), productSize: $('productSize'), productCondition: $('productCondition'), productStock: $('productStock'), productPrice: $('productPrice'), productDescription: $('productDescription'), saveProductButton: $('saveProductButton'), cancelEditButton: $('cancelEditButton'), newProductButton: $('newProductButton'), inventoryCount: $('inventoryCount'), inventoryList: $('inventoryList'),
+    productForm: $('productForm'), productFormTitle: $('productFormTitle'), productFormError: $('productFormError'), editingProductId: $('editingProductId'), productImage: $('productImage'), imagePreview: $('imagePreview'), removeProductImage: $('removeProductImage'), productName: $('productName'), productCategory: $('productCategory'), productSize: $('productSize'), productCondition: $('productCondition'), productStock: $('productStock'), productPrice: $('productPrice'), productStatus: $('productStatus'), productDescription: $('productDescription'), saveProductButton: $('saveProductButton'), cancelEditButton: $('cancelEditButton'), newProductButton: $('newProductButton'), inventoryCount: $('inventoryCount'), inventoryList: $('inventoryList'),
     ownerOrdersList: $('ownerOrdersList'), exportOrdersButton: $('exportOrdersButton'), metricOrders: $('metricOrders'), metricPending: $('metricPending'), metricDelivered: $('metricDelivered'), metricRevenue: $('metricRevenue'),
     feedbackList: $('feedbackList'), metricReviews: $('metricReviews'), metricAverageRating: $('metricAverageRating'), metricFiveStar: $('metricFiveStar'),
     appearanceForm: $('appearanceForm'), themeSelect: $('themeSelect'), primaryColor: $('primaryColor'), secondaryColor: $('secondaryColor'), resetAppearanceButton: $('resetAppearanceButton'),
@@ -480,6 +480,10 @@
     return '<div class="product-placeholder" aria-label="No product image">C\'</div>';
   }
 
+  function productPriceLabel(product) {
+    return product.price === null ? 'Price not set' : money(product.price);
+  }
+
   function getFilteredProducts() {
     const query = els.searchInput.value.trim().toLowerCase();
     const category = els.categoryFilter.value;
@@ -511,7 +515,7 @@
   function renderProducts() {
     renderCategoryOptions();
     const list = getFilteredProducts();
-    els.shopProductCount.textContent = String(products.filter((p) => Number(p.stock) > 0).length);
+    els.shopProductCount.textContent = String(products.filter((p) => p.status === 'published' && Number(p.stock) > 0).length);
     els.productEmpty.classList.toggle('hidden', list.length > 0);
     els.productGrid.classList.toggle('hidden', list.length === 0);
 
@@ -522,8 +526,8 @@
         ? `<div class="product-card-actions owner-actions"><button class="secondary-button" type="button" data-view-product="${product.id}">View</button><button class="primary-button" type="button" data-edit-product="${product.id}">Edit</button></div>`
         : `<div class="product-card-actions"><button class="primary-button" type="button" data-add-cart="${product.id}" ${soldOut ? 'disabled' : ''}>${soldOut ? 'Sold Out' : 'Add to Cart'}</button><button class="secondary-button" type="button" data-view-product="${product.id}">Details</button></div>`;
       return `<article class="product-card">
-        <div class="product-image">${productImageMarkup(product)}<div class="product-badges"><span>${escapeHtml(product.category)}</span>${soldOut ? '<span class="sold">SOLD OUT</span>' : `<span>${Number(product.stock)} left</span>`}</div></div>
-        <div class="product-info"><div class="product-title-row"><h3>${escapeHtml(product.name)}</h3><strong>${money(product.price)}</strong></div><div class="product-meta"><span>Size ${escapeHtml(product.size)}</span><span>${escapeHtml(product.condition)}</span></div><div class="rating-line"><span class="stars-static">${starString(stats.average)}</span><span>${stats.count ? `${stats.average.toFixed(1)} · ${stats.count} review${stats.count === 1 ? '' : 's'}` : 'No ratings yet'}</span></div>${cardAction}</div>
+        <div class="product-image">${productImageMarkup(product)}<div class="product-badges"><span>${escapeHtml(product.category)}</span>${product.status === 'draft' ? '<span class="draft">DRAFT</span>' : soldOut ? '<span class="sold">SOLD OUT</span>' : `<span>${Number(product.stock)} left</span>`}</div></div>
+        <div class="product-info"><div class="product-title-row"><h3>${escapeHtml(product.name)}</h3><strong>${escapeHtml(productPriceLabel(product))}</strong></div><div class="product-meta"><span>Size ${escapeHtml(product.size)}</span><span>${escapeHtml(product.condition)}</span></div><div class="rating-line"><span class="stars-static">${starString(stats.average)}</span><span>${stats.count ? `${stats.average.toFixed(1)} · ${stats.count} review${stats.count === 1 ? '' : 's'}` : 'No ratings yet'}</span></div>${cardAction}</div>
       </article>`;
     }).join('');
   }
@@ -540,7 +544,7 @@
 
     const ownerNote = isOwner() ? '<div class="review-box"><h3>Owner view</h3><p>Customers can rate and review this product. Use Inventory to edit listing details.</p></div>' : '';
 
-    els.productModalContent.innerHTML = `<div class="product-detail-grid"><div class="product-detail-media">${productImageMarkup(product)}</div><div class="product-detail-copy"><p class="eyebrow">${escapeHtml(product.category)}</p><h2 id="productModalTitle">${escapeHtml(product.name)}</h2><div class="product-detail-price">${money(product.price)}</div><div class="product-meta"><span>Size ${escapeHtml(product.size)}</span><span>${escapeHtml(product.condition)}</span><span>${Number(product.stock)} in stock</span></div><div class="rating-line"><span class="stars-static">${starString(stats.average)}</span><span>${stats.count ? `${stats.average.toFixed(1)} from ${stats.count} review${stats.count === 1 ? '' : 's'}` : 'No ratings yet'}</span></div><p class="product-description">${escapeHtml(product.description)}</p>${isConsumer() ? `<button class="primary-button" type="button" data-add-cart="${product.id}" ${Number(product.stock) <= 0 ? 'disabled' : ''}>${Number(product.stock) <= 0 ? 'Sold Out' : 'Add to Cart'}</button>` : `<button class="primary-button" type="button" data-edit-product="${product.id}">Edit Product</button>`}${consumerReviewBox}${ownerNote}</div></div>`;
+    els.productModalContent.innerHTML = `<div class="product-detail-grid"><div class="product-detail-media">${productImageMarkup(product)}</div><div class="product-detail-copy"><p class="eyebrow">${escapeHtml(product.category)}${product.status === 'draft' ? ' · DRAFT' : ''}</p><h2 id="productModalTitle">${escapeHtml(product.name)}</h2><div class="product-detail-price">${escapeHtml(productPriceLabel(product))}</div><div class="product-meta"><span>Size ${escapeHtml(product.size)}</span><span>${escapeHtml(product.condition)}</span><span>${Number(product.stock)} in stock</span></div><div class="rating-line"><span class="stars-static">${starString(stats.average)}</span><span>${stats.count ? `${stats.average.toFixed(1)} from ${stats.count} review${stats.count === 1 ? '' : 's'}` : 'No ratings yet'}</span></div><p class="product-description">${escapeHtml(product.description)}</p>${isConsumer() ? `<button class="primary-button" type="button" data-add-cart="${product.id}" ${Number(product.stock) <= 0 ? 'disabled' : ''}>${Number(product.stock) <= 0 ? 'Sold Out' : 'Add to Cart'}</button>` : `<button class="primary-button" type="button" data-edit-product="${product.id}">Edit Product</button>`}${consumerReviewBox}${ownerNote}</div></div>`;
     openModal(els.productModal);
   }
 
@@ -786,6 +790,7 @@
     els.productForm.reset();
     els.editingProductId.value = '';
     els.productStock.value = '1';
+    els.productPrice.required = true;
     pendingProductImage = '';
     pendingImageFile = null;
     removeImageRequested = false;
@@ -808,13 +813,15 @@
     els.productSize.value = product.size;
     els.productCondition.value = product.condition;
     els.productStock.value = product.stock;
-    els.productPrice.value = product.price;
+    els.productPrice.value = product.price ?? '';
+    els.productStatus.value = product.status;
+    els.productPrice.required = product.status === 'published';
     els.productDescription.value = product.description;
     pendingProductImage = product.image || '';
     pendingImageFile = null;
     removeImageRequested = false;
     els.productFormTitle.textContent = 'Edit product';
-    els.saveProductButton.textContent = 'Save changes';
+    els.saveProductButton.textContent = product.status === 'draft' ? 'Save draft' : 'Save changes';
     els.cancelEditButton.classList.remove('hidden');
     els.removeProductImage.classList.toggle('hidden', !product.image);
     els.imagePreview.innerHTML = product.image ? `<img src="${escapeHtml(product.image)}" alt="Current product image" />` : '<strong>+ Insert product image</strong><span>This listing currently has no image.</span>';
@@ -850,16 +857,28 @@
 
     const editingId = els.editingProductId.value;
     const existing = products.find((item) => item.id === editingId);
+    const status = els.productStatus.value;
+    const rawPrice = els.productPrice.value.trim();
     const fields = {
       name: els.productName.value.trim(),
       category: els.productCategory.value.trim(),
       size: els.productSize.value.trim(),
       condition: els.productCondition.value,
       stock: Math.max(0, Math.floor(Number(els.productStock.value) || 0)),
-      price: Math.max(0, Number(els.productPrice.value) || 0),
+      price: rawPrice ? Number(rawPrice) : null,
+      status,
       description: els.productDescription.value.trim()
     };
-    if (fields.price <= 0) return setFormError(els.productFormError, 'Price must be greater than zero.');
+    if (status === 'published' && (!Number.isFinite(fields.price) || fields.price <= 0)) {
+      return setFormError(els.productFormError, 'Enter a price greater than zero before publishing.');
+    }
+    if (status === 'published' && (
+      fields.condition === 'Needs inspection'
+      || ['unverified', 'various', 'not provided'].includes(fields.size.toLowerCase())
+      || fields.stock < 1
+    )) {
+      return setFormError(els.productFormError, 'Confirm the size, condition, and available stock before publishing.');
+    }
 
     try {
       const saved = await withLoading(() => existing
@@ -869,7 +888,7 @@
       resetProductForm();
       renderProducts();
       renderInventory();
-      toast(existing ? 'Product updated.' : 'Product published.');
+      toast(saved.status === 'draft' ? 'Draft saved.' : existing ? 'Product updated.' : 'Product published.');
     } catch (error) {
       if (error.sessionExpired) return handleRemoteError(error);
       setFormError(els.productFormError, error.message);
@@ -894,8 +913,9 @@
 
   function renderInventory() {
     if (!isOwner()) return;
-    els.inventoryCount.textContent = `${products.length} item${products.length === 1 ? '' : 's'}`;
-    els.inventoryList.innerHTML = products.length ? products.map((product) => `<article class="inventory-item"><div class="inventory-thumb">${productImageMarkup(product)}</div><div class="inventory-copy"><h3>${escapeHtml(product.name)}</h3><p>${escapeHtml(product.category)} · Size ${escapeHtml(product.size)} · ${escapeHtml(product.condition)}</p><b>${money(product.price)} · Stock ${Number(product.stock)}</b></div><div class="inventory-actions"><button class="small-button" type="button" data-edit-product="${product.id}">Edit</button><button class="small-button danger-button" type="button" data-delete-product="${product.id}">Delete</button></div></article>`).join('') : '<div class="empty-state"><div class="empty-mark">C\'</div><h2>No products yet.</h2><p>Add your first product using the editor.</p></div>';
+    const draftCount = products.filter((product) => product.status === 'draft').length;
+    els.inventoryCount.textContent = `${products.length} item${products.length === 1 ? '' : 's'} · ${draftCount} draft${draftCount === 1 ? '' : 's'}`;
+    els.inventoryList.innerHTML = products.length ? products.map((product) => `<article class="inventory-item"><div class="inventory-thumb">${productImageMarkup(product)}</div><div class="inventory-copy"><h3>${escapeHtml(product.name)}${product.status === 'draft' ? ' · DRAFT' : ''}</h3><p>${escapeHtml(product.category)} · Size ${escapeHtml(product.size)} · ${escapeHtml(product.condition)}</p><b>${escapeHtml(productPriceLabel(product))} · Stock ${Number(product.stock)}</b></div><div class="inventory-actions"><button class="small-button" type="button" data-edit-product="${product.id}">Edit</button><button class="small-button danger-button" type="button" data-delete-product="${product.id}">Delete</button></div></article>`).join('') : '<div class="empty-state"><div class="empty-mark">C\'</div><h2>No products yet.</h2><p>Add your first product using the editor.</p></div>';
   }
 
   // ---------- Orders ----------
@@ -1112,6 +1132,13 @@
     els.removeProductImage.classList.add('hidden');
   });
   els.productForm.addEventListener('submit', handleProductSave);
+  els.productStatus.addEventListener('change', () => {
+    const isPublished = els.productStatus.value === 'published';
+    els.productPrice.required = isPublished;
+    els.saveProductButton.textContent = els.editingProductId.value
+      ? 'Save changes'
+      : isPublished ? 'Publish product' : 'Save draft';
+  });
   els.cancelEditButton.addEventListener('click', resetProductForm);
   els.newProductButton.addEventListener('click', () => { resetProductForm(); els.productName.focus(); });
 
